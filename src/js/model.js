@@ -9,7 +9,8 @@ export const state = {
         results:[],
         page:1,
         resultsPerPage: RES_PER_PAGE
-    }
+    },
+    bookmark: [],
 }
 
 export const lodeRecipe = async function(id){
@@ -50,6 +51,7 @@ export const loadSearchResults = async function(query){
             }
         })
         // console.log(state.search.results);
+        state.search.page = 1; 
 
     }catch(err){
         console.error(`${err}*******`);
@@ -65,4 +67,26 @@ export const getSearchResultsPage = function(page=state.search.page){
     const end = page * state.search.resultsPerPage;
     console.log(start,end);
     return  state.search.results.slice(start,end)
+}
+
+
+// exporting model service function to controller.js
+
+export const updateServings = function(newServings){
+    //updeting a new ingridiaents
+    state.recipe.ingredients.forEach(ing =>{
+        ing.quantity = (ing.quantity * newServings) / state.recipe.servings;
+        // newqty = oldqty * newservings / oldservings // 2 * 8 / 4 = 4
+    });
+    state.recipe.servings = newServings
+}
+
+
+export const addBookmark = function(recipe){
+    // add bookmark 
+    state.bookmark.push(recipe)
+
+    // mark current recipe as bookmark
+    if(recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+
 }

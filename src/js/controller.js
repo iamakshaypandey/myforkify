@@ -37,6 +37,12 @@ const controlRecipes = async function(){
     // console.log(id);
     if(!id) return  
     recipeview.renderSpinner()
+
+    //0)upadate result view to mark selected search result
+    resultsView.render(model.getSearchResultsPage())
+    // resultsView.update(model.getSearchResultsPage())
+
+
     //1) loding recipe
     await model.lodeRecipe(id)
     // const {recipe} = model.state
@@ -44,8 +50,9 @@ const controlRecipes = async function(){
     //2)rendering recipe
     recipeview.render(model.state.recipe)
     
-    
-    
+  // //test servings
+  // controlServing()
+ 
   }catch(err){
     console.log(err);
     recipeview.renderError()
@@ -64,7 +71,7 @@ const controlSearchResults = async function(){
    //3 render search results
    console.log(model.state.search.results,'data comes hear');
   //  resultsView.render(model.state.search.results)
-   resultsView.render(model.getSearchResultsPage(3))
+   resultsView.render(model.getSearchResultsPage())
 
    // render initial pagination buttons
 
@@ -77,9 +84,41 @@ const controlSearchResults = async function(){
 }
 // controlSearchResults()
 
+const controlPagination = function(goto){
+  // console.log(goto);
+  // render new results
+  resultsView.render(model.getSearchResultsPage(goto))
+
+   // render new initial pagination buttons
+
+   paginationView.render(model.state.search)
+}
+
+
+const controlServing = function(newServings){
+  // update the recipe service in the state
+
+  model.updateServings(newServings)
+
+  // update the recipe view 
+  recipeview.render(model.state.recipe)  
+  // recipeview.update(model.state.recipe)
+
+  
+}
+
+const controlAddBookmark = function(){
+  model.addBookmark(model.state.recipe)
+  console.log(model.state.recipe);
+}
+
+
 const init = function(){
   recipeview.addHandlerRender(controlRecipes)
+  recipeview.addHandlerUpdateservings(controlServing)
+  recipeview.addHandlerAddBookmark(controlAddBookmark)
   searchView.addHandlerSearch(controlSearchResults)
+  paginationView.addHandlerClick(controlPagination)
 }
 init()
 

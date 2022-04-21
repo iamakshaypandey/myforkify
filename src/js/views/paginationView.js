@@ -6,12 +6,14 @@ class paginationView extends view{
     _parentElement = document.querySelector('.pagination')
 
 
-    // addHandlerClick(handler){
-    //     this._parentElement.addEventListener('click',function(e){
-    //         const btn = e.target.closest('btn--inline')
-    //         console.log(btn);
-    //     })
-    // }
+    addHandlerClick(handler){
+        this._parentElement.addEventListener('click',function(e){
+            const btn = e.target.closest('.btn--inline')
+            if(!btn) return
+            const goto = +btn.dataset.goto;
+            handler(goto);
+        })
+    }
 
     _generateMarkup(){
         const curPage = this._data.page;
@@ -23,7 +25,7 @@ class paginationView extends view{
         if(curPage === 1 && numPages > 1){
             console.log('there 1st condition');
             return `
-            <button class="btn--inline pagination__btn--next">
+            <button data-goto=${curPage + 1} class="btn--inline pagination__btn--next">
                 <span>Page ${curPage + 1}</span>
                 <svg class="search__icon">
                 <use href="${Icons}#icon-arrow-right"></use>
@@ -35,7 +37,7 @@ class paginationView extends view{
         if(curPage === numPages && numPages > 1){
             console.log('there 2snd condition');
             return `
-             <button class="btn--inline pagination__btn--prev">
+             <button data-goto=${curPage - 1} class="btn--inline pagination__btn--prev">
                 <svg class="search__icon">
                 <use href="${Icons}#icon-arrow-left"></use>
                 </svg>
@@ -46,13 +48,13 @@ class paginationView extends view{
         if(curPage < numPages){
             console.log('there 3rd condition');
             return `
-             <button class="btn--inline pagination__btn--prev">
+             <button data-goto=${curPage - 1} class="btn--inline pagination__btn--prev">
                 <svg class="search__icon">
                 <use href="${Icons}#icon-arrow-left"></use>
                 </svg>
                 <span>Page ${curPage - 1}</span>
             </button>
-            <button class="btn--inline pagination__btn--next">
+            <button data-goto=${curPage + 1} class="btn--inline pagination__btn--next">
                 <span>Page ${curPage + 1}</span>
                 <svg class="search__icon">
                 <use href="${Icons}#icon-arrow-right"></use>
