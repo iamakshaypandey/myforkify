@@ -21,3 +21,23 @@ export const getJSON = async function(url){
         throw err
     }
 }
+
+
+export const sendJSON = async function(url,uplodeData){
+  try{
+      const fetchPro=fetch(url,{
+        method: 'POST',
+        headers: {
+          'Content-Type' :'application/json',
+        },
+        body: JSON.stringify(uplodeData),
+      })
+      const res = await  Promise.race([fetchPro,timeout(TIMEOUT_SE)])  
+      const data = await res.json()
+      if(!res.ok) throw new Error(`${data.message}(${res.status})`)
+      return data
+  }catch(err){
+      alert(err)
+      throw err
+  }
+}
