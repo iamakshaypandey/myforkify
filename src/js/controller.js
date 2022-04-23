@@ -146,7 +146,7 @@ const controlAddRecipe = async function(newRecipe){
 
     // show loding spener
     addRecipeView.renderSpinner()
-    debugger
+    // debugger
 
     console.log(model.state.recipe,'yes');
    await model.uplodeRecipe(newRecipe)

@@ -1,4 +1,5 @@
 import Icons from 'url:../../img/icons.svg'; //parcel2
+import { Fraction } from 'fractional';
 
 
 

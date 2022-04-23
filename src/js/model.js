@@ -37,10 +37,9 @@ export const lodeRecipe = async function(id){
     state.recipe = createRecipeObjects(data)
 
     
-    console.log('error in theare');
+    
     if(state.bookmark.some(bookmark => bookmark.id === id)){
         state.recipe.bookmarked = true ;
-        console.log('state.recipi.bookmark',state.recipe.bookmarked);
     }
     else state.recipe.bookmarked = false;
     // console.log(state.recipe.bookmarked,'recipe');
@@ -57,7 +56,7 @@ export const loadSearchResults = async function(query){
         const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`)
         // console.log(data.data.recipes,'hyyy akshay ');
         state.search.results=data.data.recipes.map(res=>{
-            console.log(res,'there res');
+            // console.log(res,'there res');
             return {
         id:res.id,
         title:res.title,
@@ -82,7 +81,6 @@ export const getSearchResultsPage = function(page=state.search.page){
     state.search.page=page;
     const start =(page -1)* state.search.resultsPerPage;
     const end = page * state.search.resultsPerPage;
-    console.log(start,end);
     return  state.search.results.slice(start,end)
 }
 
