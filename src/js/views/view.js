@@ -4,12 +4,26 @@ import Icons from 'url:../../img/icons.svg'; //parcel2
 
 export default class view{
     _data
+
+    //
+    /**
+   * Render the received object to the DOM
+   * @param {Object | Object[]} data The data to be rendered (e.g. recipe)
+   * @param {boolean} [render=true] If false, create markup string instead of rendering to the DOM
+   * @returns {undefined | string} A markup string is returned if render=false
+   * @this {Object} View instance
+   * @author Jonas Schmedtmann
+   * @todo Finish implementation
+   */
+
+
     render(data,render = true){
+      // console.log('yes its calling');
         if(!data || (Array.isArray(data) && data.length === 0))return this.renderError();
 
         this._data = data;
         const markup = this._generateMarkup();
-        // console.log(data,'hello akshay', markup);
+        // console.log('hello akshay', markup);
         if(!render) return markup;
         this._clear()
         this._parentElement.insertAdjacentHTML("afterbegin",markup)
@@ -80,7 +94,8 @@ export default class view{
         this._parentElement.insertAdjacentHTML('afterbegin',markup)
     }
 
-    renderMessage(message = this._Message){
+    renderMessage(message = this._message){
+      // console.log('its calling or not',this._message);
       const markup = `
           <div class="message">
             <div>

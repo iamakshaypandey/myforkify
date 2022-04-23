@@ -31,13 +31,16 @@ class addRecipeView extends view{
         this._overly.addEventListener('click',this.toggleWindow.bind(this));
     }
 
-
+    
+    
+    
     addHandlerUplode(handler){
         this._parentElement.addEventListener('submit',function(e){
             console.log('click hear');
             e.preventDefault()
             const dataArr = [...new FormData(this)]
             const data = Object.fromEntries(dataArr)
+            console.log(data,'is data');
             handler(data);
         })
     }

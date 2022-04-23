@@ -46,6 +46,7 @@ const controlRecipes = async function(){
     resultsView.update(model.getSearchResultsPage())
     
     //2) updating bookmarks view
+    // console.log(model.state.bookmark);
     bookmarksView.update(model.state.bookmark)
     
     //2) loding recipe
@@ -74,9 +75,9 @@ const controlSearchResults = async function(){
 
    //2 load search results
 
+   console.log(model.state.search.results,'data comes hear');
    await model.loadSearchResults(query)
    //3 render search results
-   console.log(model.state.search.results,'data comes hear');
   //  resultsView.render(model.state.search.results)
    resultsView.render(model.getSearchResultsPage())
 
@@ -104,6 +105,7 @@ const controlPagination = function(goto){
 
 const controlServing = function(newServings){
   // update the recipe service in the state
+  console.log('updat is calling',newServings);
 
   model.updateServings(newServings)
 
@@ -137,22 +139,37 @@ const controlBookmarks = function(){
 }
 
 
+// debugger
 const controlAddRecipe = async function(newRecipe){
   // console.log(newRecipe);
   try{
 
+    // show loding spener
+    addRecipeView.renderSpinner()
+    debugger
+
+    console.log(model.state.recipe,'yes');
    await model.uplodeRecipe(newRecipe)
-   console.log(model.state.recipe,'yes');
 
   //  render recipe
   recipeview.render(model.state.recipe)
-
+  
   // success message
+  // debugger
   addRecipeView.renderMessage()
+
+
+  // render bookmarks view
+
+  bookmarksView.render(model.state.bookmark)
+
+
+  // change id in url 
+  window.history.pushState(null,'',`${model.state.recipe.id}`)
 
   // close for window
   setTimeout(() => {
-    addRecipeView.toggleWindow()
+    // addRecipeView.toggleWindow()
   }, MODEL_CLOSE_SEC *1000);
 
 

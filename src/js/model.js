@@ -1,6 +1,8 @@
 import { async } from "regenerator-runtime"
 import { API_URL ,RES_PER_PAGE,KEY} from "./config.js"
-import { getJSON ,sendJSON } from "./helper.js"
+// import { getJSON ,sendJSON } from "./helper.js"
+import { AJAX} from "./helper.js"
+
 
 export const state = {
     recipe:{},
@@ -30,7 +32,7 @@ const createRecipeObjects = function(data){
 
 export const lodeRecipe = async function(id){
     try{
-    const data= await getJSON(`${API_URL}${id}`)
+    const data= await AJAX(`${API_URL}${id}?key=${KEY}`)
 
     state.recipe = createRecipeObjects(data)
 
@@ -52,17 +54,20 @@ export const lodeRecipe = async function(id){
 export const loadSearchResults = async function(query){
     try{
         state.search.query=query
-        const data = await getJSON(`${API_URL}?search=${query}`)
+        const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`)
         // console.log(data.data.recipes,'hyyy akshay ');
         state.search.results=data.data.recipes.map(res=>{
+            console.log(res,'there res');
             return {
         id:res.id,
         title:res.title,
         publisher:res.publisher,
         image:res.image_url,
+        ...(res.key && {key: res.key}),
+
             }
         })
-        // console.log(state.search.results);
+        // console.log(state.search.results,'i thin k its comes heare or not');
         state.search.page = 1; 
 
     }catch(err){
@@ -86,11 +91,13 @@ export const getSearchResultsPage = function(page=state.search.page){
 
 export const updateServings = function(newServings){
     //updeting a new ingridiaents
+    console.log(state.recipe.ingredients,'normal check');
     state.recipe.ingredients.forEach(ing =>{
         ing.quantity = (ing.quantity * newServings) / state.recipe.servings;
         // newqty = oldqty * newservings / oldservings // 2 * 8 / 4 = 4
     });
     state.recipe.servings = newServings
+    console.log(newServings,'newservings');
 }
 
 
@@ -145,10 +152,15 @@ const clearbookmarks = function(){
 
 export const uplodeRecipe = async function(newRecipe){
     try{
-    const ingrid = Object.entries(newRecipe)
-    .filter(entry=>entry[0].startsWith('ingredient')&&entry[1]!=='')
-    .map(ing=>{
-        const ingArr = ing[1].replaceAll(' ','').split(',')
+        const ingrid = Object.entries(newRecipe)
+        
+        .filter(entry=>entry[0].startsWith('ingredient')&&entry[1]!=='')
+        .map(ing=>{
+            const ingArr = ing[1].split(',').map(el=> el.trim())
+            console.log(ingArr,'hyyyyyyy');
+            // const ingArr = ing[1].replaceAll(' ','').split(',')
+           
+
         const [quantity,unit,description]=ingArr
         if(ingArr.length !== 3)
         // console.log('there false');
@@ -158,6 +170,9 @@ export const uplodeRecipe = async function(newRecipe){
 
         return  {quantity: quantity ? +quantity : null,unit,description}
     })
+
+    // console.log(ingrid,'its i am');
+    
 
     // const recipe ={
     //   title:newRecipe.title,
@@ -181,7 +196,7 @@ export const uplodeRecipe = async function(newRecipe){
     }
 
     // console.log(recipe);
-    const data = await sendJSON(`${API_URL}?key=${KEY}`,recipe)
+    const data = await AJAX(`${API_URL}?key=${KEY}`,recipe)
     state.recipe = createRecipeObjects(data)
     addBookmark(state.recipe)
 
