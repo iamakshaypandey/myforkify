@@ -1,7 +1,8 @@
 import view from './view.js';
 
 import Icons from 'url:../../img/icons.svg'; //parcel2
-import {Fraction} from 'fractional';
+// import {Fraction} from 'fractional';
+import fracty from 'fracty'
 // console.log(Fraction);
 
 class RecipeView extends view{
@@ -118,12 +119,13 @@ class RecipeView extends view{
     }
 
     _generateMarkupIngredient(ing){
+      // console.log(fracty(ing.quantity),'check fraction err');
       return `
               <li class="recipe__ingredient">
                 <svg class="recipe__icon">
                   <use href="${Icons}#icon-check"></use>
                 </svg>
-                <div class="recipe__quantity">${ing.quantity ? new Fraction(ing.quantity) : ''}</div>
+                <div class="recipe__quantity">${ing.quantity ? new fracty(ing.quantity) : ''}</div>
                 <div class="recipe__description">
                   <span class="recipe__unit">${ing.unit}</span>
                   ${ing.description}
