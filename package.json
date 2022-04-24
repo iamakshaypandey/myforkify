@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "core-js": "^3.22.0",
+    "fracty": "^1.0.10",
     "fractional": "^1.0.0",
     "npm": "^6.14.5",
     "regenerator-runtime": "^0.13.9",
