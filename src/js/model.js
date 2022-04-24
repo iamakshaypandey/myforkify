@@ -139,7 +139,7 @@ const init = function(){
 
 }
 init()
-console.log(state.bookmark);
+console.log(state.bookmark,'bookmarks');
 
 
 const clearbookmarks = function(){
