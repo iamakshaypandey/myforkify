@@ -2,7 +2,7 @@
   "name": "starter",
   "version": "1.0.0",
   "description": "recipi",
-  "main": "index.js",
+  "default": "index.js",
   "dependencies": {
     "core-js": "^3.22.0",
     "fracty": "^1.0.10",
