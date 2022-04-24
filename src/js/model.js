@@ -17,6 +17,7 @@ export const state = {
 
 const createRecipeObjects = function(data){
     const {recipe}=data.data
+
        return {
         id:recipe.id,
         title:recipe.title,
@@ -30,6 +31,7 @@ const createRecipeObjects = function(data){
       }
 }
 
+
 export const lodeRecipe = async function(id){
     try{
     const data= await AJAX(`${API_URL}${id}?key=${KEY}`)
@@ -42,7 +44,7 @@ export const lodeRecipe = async function(id){
         state.recipe.bookmarked = true ;
     }
     else state.recipe.bookmarked = false;
-    // console.log(state.recipe.bookmarked,'recipe');
+    
 }catch(err){
     console.error(`${err}***************`);
     throw err;
@@ -54,9 +56,9 @@ export const loadSearchResults = async function(query){
     try{
         state.search.query=query
         const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`)
-        // console.log(data.data.recipes,'hyyy akshay ');
+        
         state.search.results=data.data.recipes.map(res=>{
-            // console.log(res,'there res');
+        
             return {
         id:res.id,
         title:res.title,
@@ -66,7 +68,7 @@ export const loadSearchResults = async function(query){
 
             }
         })
-        // console.log(state.search.results,'i thin k its comes heare or not');
+        
         state.search.page = 1; 
 
     }catch(err){
@@ -89,13 +91,13 @@ export const getSearchResultsPage = function(page=state.search.page){
 
 export const updateServings = function(newServings){
     //updeting a new ingridiaents
-    console.log(state.recipe.ingredients,'normal check');
+    
     state.recipe.ingredients.forEach(ing =>{
         ing.quantity = (ing.quantity * newServings) / state.recipe.servings;
         // newqty = oldqty * newservings / oldservings // 2 * 8 / 4 = 4
     });
     state.recipe.servings = newServings
-    console.log(newServings,'newservings');
+    
 }
 
 
@@ -108,7 +110,7 @@ const persistBookMarks = function(){
 export const addBookmark = function(recipe){
     // add bookmark 
     state.bookmark.push(recipe)
-    console.log(state.bookmark,'main array');
+
 
     // mark current recipe as bookmark
     if(recipe.id === state.recipe.id) state.recipe.bookmarked = true;
@@ -139,7 +141,7 @@ const init = function(){
 
 }
 init()
-console.log(state.bookmark,'bookmarks');
+
 
 
 const clearbookmarks = function(){
@@ -147,29 +149,28 @@ const clearbookmarks = function(){
   }
 //   clearbookmarks()
 
-
+// debugger
 export const uplodeRecipe = async function(newRecipe){
     try{
-        const ingrid = Object.entries(newRecipe)
-        
+        const ingredients = Object.entries(newRecipe)
         .filter(entry=>entry[0].startsWith('ingredient')&&entry[1]!=='')
         .map(ing=>{
             const ingArr = ing[1].split(',').map(el=> el.trim())
-            console.log(ingArr,'hyyyyyyy');
             // const ingArr = ing[1].replaceAll(' ','').split(',')
-           
-
+            
+            
+            if(ingArr.length !== 3)
+            
+            throw new Error (
+                'wrong ingridients formate please use right formate:'
+                )
+                
         const [quantity,unit,description]=ingArr
-        if(ingArr.length !== 3)
-        // console.log('there false');
-        throw new Error (
-            'wrong ingridients formate please use right formate:'
-        )
-
+    
         return  {quantity: quantity ? +quantity : null,unit,description}
     })
 
-    // console.log(ingrid,'its i am');
+
     
 
     // const recipe ={
@@ -181,8 +182,8 @@ export const uplodeRecipe = async function(newRecipe){
     //   cooking_Time: +newRecipe.cooking_time,
     //   ingrid,
     // }
-    // console.log(newRecipe);
 
+    // debugger
     const recipe = {
         title: newRecipe.title,
         source_url: newRecipe.sourceUrl,
@@ -190,21 +191,21 @@ export const uplodeRecipe = async function(newRecipe){
         publisher: newRecipe.publisher,
         cooking_time: +newRecipe.cookingTime,
         servings: +newRecipe.servings,
-        ingrid,
+        ingredients,
     }
+    
 
-    // console.log(recipe);
     const data = await AJAX(`${API_URL}?key=${KEY}`,recipe)
+    
     state.recipe = createRecipeObjects(data)
     addBookmark(state.recipe)
 
-    // console.log(data);
+
 
 
 
     }catch(err){
         throw err
     }
-    // const ingridiaents = newRecipe
-    console.log(Object.entries(newRecipe));
+
 }

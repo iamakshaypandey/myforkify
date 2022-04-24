@@ -18,8 +18,6 @@ import { async } from 'regenerator-runtime/runtime';
 // }
 
 
-// console.log(Icons,'akshay');
-
 // const recipeContainer = document.querySelector('.recipe');
 
 
@@ -29,15 +27,13 @@ import { async } from 'regenerator-runtime/runtime';
 ///////////////////////////////////////
 
 
-// console.log('Test');
 
 
 const controlRecipes = async function(){
   try {
     // resultsView.renderSpinner()
-    // console.log(resultsView,'resultsview');
     const id = window.location.hash.slice(1)
-    // console.log(id);
+  
     if(!id) return  
     recipeview.renderSpinner()
 
@@ -46,7 +42,7 @@ const controlRecipes = async function(){
     resultsView.update(model.getSearchResultsPage())
     
     //2) updating bookmarks view
-    // console.log(model.state.bookmark);
+    
     bookmarksView.update(model.state.bookmark)
     
     //2) loding recipe
@@ -75,7 +71,7 @@ const controlSearchResults = async function(){
 
    //2 load search results
 
-   console.log(model.state.search.results,'data comes hear');
+   
    await model.loadSearchResults(query)
    //3 render search results
   //  resultsView.render(model.state.search.results)
@@ -93,7 +89,7 @@ const controlSearchResults = async function(){
 // controlSearchResults()
 
 const controlPagination = function(goto){
-  // console.log(goto);
+  
   // render new results
   resultsView.render(model.getSearchResultsPage(goto))
 
@@ -105,7 +101,7 @@ const controlPagination = function(goto){
 
 const controlServing = function(newServings){
   // update the recipe service in the state
-  console.log('updat is calling',newServings);
+  
 
   model.updateServings(newServings)
 
@@ -120,11 +116,11 @@ const controlAddBookmark = function(){
 
   // add and remove bookmarks 
 
-  // console.log('check bookmarked',model.state.recipe.bookmarked);
+  
   if(!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe)
   else model.deleteBookmark(model.state.recipe.id)
 
-  // console.log(model.state.recipe);
+
   // update recipe view
 
   recipeview.update(model.state.recipe)
@@ -141,21 +137,21 @@ const controlBookmarks = function(){
 
 // debugger
 const controlAddRecipe = async function(newRecipe){
-  // console.log(newRecipe);
+  
   try{
 
     // show loding spener
     addRecipeView.renderSpinner()
     // debugger
 
-    console.log(model.state.recipe,'yes');
-   await model.uplodeRecipe(newRecipe)
+    await model.uplodeRecipe(newRecipe)
+    
 
-  //  render recipe
+  //  render recipe//////pointcheck
   recipeview.render(model.state.recipe)
   
   // success message
-  // debugger
+  // debugger pointcheck
   addRecipeView.renderMessage()
 
 

@@ -32,7 +32,7 @@ class paginationView extends view{
 
         // last page
         if(curPage === numPages && numPages > 1){
-            console.log('there 2snd condition');
+            
             return `
              <button data-goto=${curPage - 1} class="btn--inline pagination__btn--prev">
                 <svg class="search__icon">
@@ -43,7 +43,7 @@ class paginationView extends view{
         }
         // other page
         if(curPage < numPages){
-            console.log('there 3rd condition');
+            
             return `
              <button data-goto=${curPage - 1} class="btn--inline pagination__btn--prev">
                 <svg class="search__icon">

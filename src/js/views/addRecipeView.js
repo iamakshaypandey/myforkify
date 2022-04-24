@@ -36,11 +36,11 @@ class addRecipeView extends view{
     
     addHandlerUplode(handler){
         this._parentElement.addEventListener('submit',function(e){
-            console.log('click hear');
+
             e.preventDefault()
             const dataArr = [...new FormData(this)]
             const data = Object.fromEntries(dataArr)
-            console.log(data,'is data');
+            
             handler(data);
         })
     }
